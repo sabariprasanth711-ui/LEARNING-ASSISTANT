@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Assistant</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        header {
+            background: #4f46e5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #4f46e5;
+        }
+
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #3730a3;
+        }
+
+        input {
+            width: 70%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #22c55e;
+            transition: 0.4s;
+        }
+
+        .answer {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: #eef2ff;
+            color: #222;
+        }
+
+        .option:hover {
+            background: #c7d2fe;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>📚 Learning Assistant</h1>
+    <p>Your personal study helper</p>
+</header>
+
+<div class="container">
+
+    <!-- Progress -->
+    <div class="card">
+        <h2>My Learning Progress</h2>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <p id="progressText">Progress: 0%</p>
+    </div>
+
+    <!-- Lessons -->
+    <div class="card">
+        <h2>📖 Lessons</h2>
+
+        <button onclick="showLesson('HTML')">HTML</button>
+        <button onclick="showLesson('CSS')">CSS</button>
+        <button onclick="showLesson('JavaScript')">JavaScript</button>
+
+        <div id="lessonContent">
+            <p>Select a subject to start learning.</p>
+        </div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="card">
+        <h2>📝 Quick Quiz</h2>
+
+        <p id="question">
+            Which language is used to structure a web page?
+        </p>
+
+        <button class="option" onclick="checkAnswer('HTML')">
+            HTML
+        </button>
+
+        <button class="option" onclick="checkAnswer('CSS')">
+            CSS
+        </button>
+
+        <button class="option" onclick="checkAnswer('Python')">
+            Python
+        </button>
+
+        <p class="answer" id="quizResult"></p>
+    </div>
+
+    <!-- Ask Assistant -->
+    <div class="card">
+        <h2>🤖 Ask Learning Assistant</h2>
+
+        <input
+            type="text"
+            id="userQuestion"
+            placeholder="Ask something..."
+        >
+
+        <button onclick="askAssistant()">Ask</button>
+
+        <p id="assistantAnswer"></p>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Learning Assistant
+</footer>
+
+<script>
+
+    let progress = 0;
+
+    function updateProgress(amount) {
+        progress += amount;
+
+        if (progress > 100) {
+            progress = 100;
+        }
+
+        document.getElementById("progressBar").style.width =
+            progress + "%";
+
+        document.getElementById("progressText").innerText =
+            "Progress: " + progress + "%";
+    }
+
+
+    function showLesson(subject) {
+
+        let content = "";
+
+        if (subject === "HTML") {
+            content = `
+                <h3>HTML</h3>
+                <p>
+                    HTML stands for HyperText Markup Language.
+                    It is used to create the structure of web pages.
+                </p>
+
+                <pre>
+&lt;h1&gt;Hello World&lt;/h1&gt;
+&lt;p&gt;Welcome to HTML&lt;/p&gt;
+                </pre>
+            `;
+        }
+
+        else if (subject === "CSS") {
+            content = `
+                <h3>CSS</h3>
+                <p>
+                    CSS stands for Cascading Style Sheets.
+                    It is used to style and design web pages.
+                </p>
+
+                <pre>
+body {
+    background: blue;
+    color: white;
+}
+                </pre>
+            `;
+        }
+
+        else if (subject === "JavaScript") {
+            content = `
+                <h3>JavaScript</h3>
+                <p>
+                    JavaScript makes web pages interactive.
+                </p>
+
+                <pre>
+alert("Hello World!");
+                </pre>
+            `;
+        }
+
+        document.getElementById("lessonContent").innerHTML = content;
+
+        updateProgress(10);
+    }
+
+
+    function checkAnswer(answer) {
+
+        let result = document.getElementById("quizResult");
+
+        if (answer === "HTML") {
+            result.innerHTML = "✅ Correct! HTML creates the structure of a web page.";
+            result.style.color = "green";
+
+            updateProgress(20);
+        }
+
+        else {
+            result.innerHTML = "❌ Incorrect. Try again!";
+            result.style.color = "red";
+        }
+    }
+
+
+    function askAssistant() {
+
+        let question =
+            document.getElementById("userQuestion").value.toLowerCase();
+
+        let answer =
+            document.getElementById("assistantAnswer");
+
+        if (question.includes("html")) {
+
+            answer.innerHTML =
+                "HTML is used to create the structure of web pages.";
+
+        }
+
+        else if (question.includes("css")) {
+
+            answer.innerHTML =
+                "CSS is used to style HTML elements.";
+
+        }
+
+        else if (question.includes("javascript")) {
+
+            answer.innerHTML =
+                "JavaScript is used to add interactivity to websites.";
+
+        }
+
+        else if (question.includes("hello")) {
+
+            answer.innerHTML =
+                "Hello! 👋 What would you like to learn today?";
+
+        }
+
+        else {
+
+            answer.innerHTML =
+                "I'm still learning! Try asking about HTML, CSS, or JavaScript.";
+        }
+    }
+
+</script>
+
+</body>
+</html>
